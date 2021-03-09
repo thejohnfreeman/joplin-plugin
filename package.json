@@ -1,0 +1,12 @@
+{
+  "name": "joplin-plugin-api",
+  "version": "1.7.11",
+  "description": "Typings for the Joplin Plugin API",
+  "main": "src/index.ts",
+  "repository": "https://github.com/thejohnfreeman/joplin-plugin-api",
+  "author": "Laurent Cozic; John Freeman <jfreeman08@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^3.9.3"
+  }
+}
