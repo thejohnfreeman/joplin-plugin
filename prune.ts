@@ -27,22 +27,100 @@ class ModuleResolver {
   }
 }
 
+function getImportedNames(clause: ts.ImportClause): string[] {
+  if (clause.name) {
+    return [clause.name.text]
+  }
+  if (!clause.namedBindings) {
+    throw new Error(`unknown variant of import clause: ${clause}`)
+  }
+  const bindings = clause.namedBindings
+  if (bindings.kind == ts.SyntaxKind.NamespaceImport) {
+    return [(bindings as ts.NamespaceImport).name.text]
+  }
+  if (bindings.kind != ts.SyntaxKind.NamedImports) {
+    throw new Error(`unknown variant of named bindings: ${bindings}`)
+  }
+  return bindings.elements.map((spec) => spec.name.text)
+}
+
+// If you want to see which nodes are parsed from a program,
+// visit https://ts-ast-viewer.com/
+
 class Transformer {
   public constructor(
+    private context: ts.TransformationContext,
     private moduleResolver: ModuleResolver,
-    private context: ts.TransformationContext
+    private externals: string[] = []
   ) {}
 
   private visit = (node: ts.Node) => this.visitNode(node)
 
   public visitImportDeclaration(decl: ts.ImportDeclaration) {
+    // Remove import if the module cannot be found.
     const spec = decl.moduleSpecifier as any
-    return this.moduleResolver.moduleExists(spec.text) ? decl : null
+    if (this.moduleResolver.moduleExists(spec.text)) {
+      return decl
+    }
+    if (decl.importClause) {
+      // Imports can be for side-effects only.
+      this.externals.push(...getImportedNames(decl.importClause))
+    }
+    return null
+  }
+
+  public visitPropertyDeclaration(decl: ts.PropertyDeclaration) {
+    // Remove private declarations.
+    if (
+      decl.modifiers?.some(
+        (modifier) => modifier.kind == ts.SyntaxKind.PrivateKeyword
+      )
+    ) {
+      return null
+    }
+    return decl
+  }
+
+  /**
+   * This implementation is not yet complete, but is good enough for now.
+   * @return true if the given type references any external names
+   */
+  private isExternalType(type: ts.TypeNode) {
+    if (!ts.isTypeReferenceNode(type)) {
+      return false
+    }
+    const ref = type as ts.TypeReferenceNode
+    let name = ref.typeName
+    while (name.kind == ts.SyntaxKind.QualifiedName) {
+      name = name.left
+    }
+    return this.externals.includes(name.text)
+  }
+
+  public visitMethodDeclaration(
+    method: ts.ConstructorDeclaration | ts.MethodDeclaration
+  ) {
+    // Remove constructors and methods that reference external names.
+    for (const param of method.parameters) {
+      if (this.isExternalType(param.type)) {
+        return null
+      }
+    }
+    return method
   }
 
   public visitNode(node: ts.Node) {
     if (node.kind === ts.SyntaxKind.ImportDeclaration) {
       return this.visitImportDeclaration(node as ts.ImportDeclaration)
+    }
+    if (node.kind == ts.SyntaxKind.PropertyDeclaration) {
+      return this.visitPropertyDeclaration(node as ts.PropertyDeclaration)
+    }
+    if (node.kind == ts.SyntaxKind.Constructor) {
+      return this.visitMethodDeclaration(node as ts.ConstructorDeclaration)
+    }
+    if (node.kind == ts.SyntaxKind.MethodDeclaration) {
+      return this.visitMethodDeclaration(node as ts.MethodDeclaration)
     }
     return ts.visitEachChild(node, this.visit, this.context)
   }
@@ -50,7 +128,7 @@ class Transformer {
   public static factory(path: Path): ts.TransformerFactory<ts.Node> {
     return (context: ts.TransformationContext) => {
       const moduleResolver = new ModuleResolver(path)
-      const transformer = new Transformer(moduleResolver, context)
+      const transformer = new Transformer(context, moduleResolver)
       return (node: ts.Node) => transformer.visitNode(node)
     }
   }
