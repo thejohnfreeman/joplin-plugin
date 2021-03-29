@@ -1,2 +1,2 @@
 /node_modules/
-/prune.js
+/src/**/*.js

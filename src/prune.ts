@@ -134,8 +134,23 @@ class Transformer {
   }
 }
 
+enum QuoteStyle {
+  SingleAlways,
+  DoubleAlways,
+}
+
+function setQuoteStyle(style: QuoteStyle) {
+  const singleQuote = style == QuoteStyle.SingleAlways
+  return (hint: ts.EmitHint, node: any) => {
+    if (node.kind == ts.SyntaxKind.StringLiteral) {
+      node.singleQuote = singleQuote
+    }
+    return node
+  }
+}
+
 async function main() {
-  const sourceRoot = 'src'
+  const sourceRoot = 'output/src'
   for await (const path of find(name('*.ts'), { start: sourceRoot })) {
     const filename = path.toString()
     const file = await fs.open(filename, 'r+')
@@ -149,8 +164,12 @@ async function main() {
     const result = ts.transform(sourceFile, [
       Transformer.factory(new Path(filename.split('/'))),
     ])
-    const printer = ts.createPrinter()
-    const text = printer.printFile(result.transformed[0] as ts.SourceFile)
+    const outputFile = result.transformed[0]
+    const printer = ts.createPrinter(
+      {},
+      { substituteNode: setQuoteStyle(QuoteStyle.SingleAlways) }
+    )
+    const text = printer.printFile(outputFile as ts.SourceFile)
     await fs.writeFile(filename, text, 'utf8')
   }
 }
