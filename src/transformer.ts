@@ -1,7 +1,6 @@
-import * as fs from 'fs/promises'
-import { statSync } from 'fs'
+import * as fs from 'fs-extra'
+import { Path } from 'node-find'
 import { resolve } from 'path'
-import { find, name, Path } from 'node-find'
 import * as ts from 'typescript'
 
 // TODO: Create a CompilerHost and use it for module resolution.
@@ -17,7 +16,7 @@ class ModuleResolver {
     for (const extension of ['', '.d.ts', '.ts', '.js']) {
       const pathModule = resolve(directory, spec + extension)
       try {
-        const stat = statSync(pathModule)
+        const stat = fs.statSync(pathModule)
         if (stat.isFile()) {
           return true
         }
@@ -47,7 +46,7 @@ function getImportedNames(clause: ts.ImportClause): string[] {
 // If you want to see which nodes are parsed from a program,
 // visit https://ts-ast-viewer.com/
 
-class Transformer {
+export class Transformer {
   public constructor(
     private context: ts.TransformationContext,
     private moduleResolver: ModuleResolver,
@@ -125,6 +124,10 @@ class Transformer {
     return ts.visitEachChild(node, this.visit, this.context)
   }
 
+  /**
+   * @param path Path to the module being transformed. Used to resolve
+   * relative imports.
+   */
   public static factory(path: Path): ts.TransformerFactory<ts.Node> {
     return (context: ts.TransformationContext) => {
       const moduleResolver = new ModuleResolver(path)
@@ -149,29 +152,23 @@ function setQuoteStyle(style: QuoteStyle) {
   }
 }
 
-async function main() {
-  const sourceRoot = 'output/src'
-  for await (const path of find(name('*.ts'), { start: sourceRoot })) {
-    const filename = path.toString()
-    const file = await fs.open(filename, 'r+')
-    const source = await file.readFile('utf8')
-    await file.close()
-    const sourceFile = ts.createSourceFile(
-      filename,
-      source,
-      ts.ScriptTarget.ES2016
-    )
-    const result = ts.transform(sourceFile, [
-      Transformer.factory(new Path(filename.split('/'))),
-    ])
-    const outputFile = result.transformed[0]
-    const printer = ts.createPrinter(
-      {},
-      { substituteNode: setQuoteStyle(QuoteStyle.SingleAlways) }
-    )
-    const text = printer.printFile(outputFile as ts.SourceFile)
-    await fs.writeFile(filename, text, 'utf8')
-  }
+export async function transform(
+  path: Path,
+  factories: ts.TransformerFactory<ts.Node>[]
+) {
+  const filename = path.toString()
+  const source = await fs.readFile(filename, 'utf8')
+  const sourceFile = ts.createSourceFile(
+    filename,
+    source,
+    ts.ScriptTarget.ES2016
+  )
+  const result = ts.transform(sourceFile, factories)
+  const outputFile = result.transformed[0]
+  const printer = ts.createPrinter(
+    {},
+    { substituteNode: setQuoteStyle(QuoteStyle.SingleAlways) }
+  )
+  const text = printer.printFile(outputFile as ts.SourceFile)
+  await fs.writeFile(filename, text, 'utf8')
 }
-
-main()
