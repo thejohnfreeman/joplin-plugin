@@ -1,4 +1,6 @@
 import * as child_process from 'child_process'
+import { find, name, and, type } from 'node-find'
+import { transform, Transformer } from './transformer'
 import * as fs from 'fs-extra'
 import { sep as pathsep } from 'path'
 import * as os from 'os'
@@ -66,16 +68,22 @@ async function pipeline(dstdir: string, ref: string, version: string) {
     // These commands come from
     // joplin/packages/generator-joplin/updateTypes.sh.
     await fs.copy(`${tmpdir}/services/plugins/api`, `${dstdir}/src`)
+    // TODO: Why do we make an exception for types.ts?
     await fs.copy(
       `${srcdir}/services/plugins/api/types.ts`,
       `${dstdir}/src/types.ts`
     )
-    await fs.rm(`${dstdir}/src/types.d.ts`)
+    await (fs.rm as any)(`${dstdir}/src/types.d.ts`)
     // index.ts was copied from
     // joplin/packages/generator-joplin/generators/app/templates/api_index.ts.
     // We don't expect it to ever change.
   } finally {
-    await fs.rmdir(tmpdir, { recursive: true })
+    await (fs.rmdir as any)(tmpdir, { recursive: true })
+  }
+  // Remove cruft.
+  const predicate = and(name('*.d.ts'), type('f'))
+  for await (const path of find(predicate, { start: `${dstdir}/src` })) {
+    await transform(path, [Transformer.factory(path)])
   }
   // Copy the version string.
   const json = await fs.readJson(`${dstdir}/package.json`)
@@ -84,11 +92,11 @@ async function pipeline(dstdir: string, ref: string, version: string) {
 }
 
 async function main() {
+  const dstdir = 'output'
   const ref = 'v1.7.3'
   // Often the version string in joplin/packages/lib/package.json does not
   // match the Git tag. Pass them separately.
   const version = '1.7.3'
-  const dstdir = 'output'
   await pipeline(dstdir, ref, version)
 }
 
