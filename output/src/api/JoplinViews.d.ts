@@ -1,4 +1,3 @@
-import Plugin from '../Plugin';
 import JoplinViewsDialogs from './JoplinViewsDialogs';
 import JoplinViewsMenuItems from './JoplinViewsMenuItems';
 import JoplinViewsMenus from './JoplinViewsMenus';
@@ -11,15 +10,6 @@ import JoplinViewsPanels from './JoplinViewsPanels';
  * In some cases, the `create()` method will return a [[ViewHandle]], which you would use to act on the view, for example to set certain properties or call some methods.
  */
 export default class JoplinViews {
-    private store;
-    private plugin;
-    private dialogs_;
-    private panels_;
-    private menuItems_;
-    private menus_;
-    private toolbarButtons_;
-    private implementation_;
-    constructor(implementation: any, plugin: Plugin, store: any);
     get dialogs(): JoplinViewsDialogs;
     get panels(): JoplinViewsPanels;
     get menuItems(): JoplinViewsMenuItems;

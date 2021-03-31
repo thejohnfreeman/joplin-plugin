@@ -1,4 +1,3 @@
-import Plugin from '../Plugin';
 import JoplinData from './JoplinData';
 import JoplinPlugins from './JoplinPlugins';
 import JoplinWorkspace from './JoplinWorkspace';
@@ -24,16 +23,6 @@ import JoplinContentScripts from './JoplinContentScripts';
  * Eventually, the plugin API will be versioned to make this process smoother.
  */
 export default class Joplin {
-    private data_;
-    private plugins_;
-    private workspace_;
-    private filters_;
-    private commands_;
-    private views_;
-    private interop_;
-    private settings_;
-    private contentScripts_;
-    constructor(implementation: any, plugin: Plugin, store: any);
     get data(): JoplinData;
     get plugins(): JoplinPlugins;
     get workspace(): JoplinWorkspace;

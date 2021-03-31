@@ -1,4 +1,3 @@
-import Plugin from '../Plugin';
 import { SettingItem, SettingSection } from './types';
 export interface ChangeEvent {
     /**
@@ -17,10 +16,7 @@ export declare type ChangeHandler = (event: ChangeEvent) => void;
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/settings)
  */
 export default class JoplinSettings {
-    private plugin_;
-    constructor(plugin: Plugin);
     private get keyPrefix();
-    private namespacedKey;
     /**
      * Registers a new setting. Note that registering a setting item is dynamic and will be gone next time Joplin starts.
      * What it means is that you need to register the setting every time the plugin starts (for example in the onStart event).
