@@ -67,13 +67,13 @@ async function pipeline(dstdir: string, ref: string, version: string) {
     )
     // These commands come from
     // joplin/packages/generator-joplin/updateTypes.sh.
-    await fs.copy(`${tmpdir}/services/plugins/api`, `${dstdir}/src`)
+    await fs.copy(`${tmpdir}/services/plugins/api`, `${dstdir}/src/api`)
     // TODO: Why do we make an exception for types.ts?
     await fs.copy(
       `${srcdir}/services/plugins/api/types.ts`,
-      `${dstdir}/src/types.ts`
+      `${dstdir}/src/api/types.ts`
     )
-    await (fs.rm as any)(`${dstdir}/src/types.d.ts`)
+    await (fs.rm as any)(`${dstdir}/src/api/types.d.ts`)
     // index.ts was copied from
     // joplin/packages/generator-joplin/generators/app/templates/api_index.ts.
     // We don't expect it to ever change.
@@ -82,7 +82,7 @@ async function pipeline(dstdir: string, ref: string, version: string) {
   }
   // Remove cruft.
   const predicate = and(name('*.d.ts'), type('f'))
-  for await (const path of find(predicate, { start: `${dstdir}/src` })) {
+  for await (const path of find(predicate, { start: `${dstdir}/src/api` })) {
     await transform(path, [Transformer.factory(path)])
   }
   // Copy the version string.
