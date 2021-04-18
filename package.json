@@ -1,10 +1,10 @@
 {
-  "repository": "https://github.com/thejohnfreeman/joplin-plugin-api",
+  "repository": "https://github.com/thejohnfreeman/joplin-plugin",
   "author": "John Freeman <jfreeman08@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/fs-extra": "^9.0.10",
     "@types/node": "^14.14.34",
-    "@types/fs-extra": "^9.0.9",
     "prettier": "^2.2.1"
   },
   "dependencies": {

@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "module": "commonjs"
+    "module": "commonjs",
+    "experimentalDecorators": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/input.d.ts"]
 }
