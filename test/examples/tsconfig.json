@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    // Ignore declaration files from typescript package.
+    "lib": [],
+    // Ignore declaration files from other packages.
+    "types": []
+  },
+  "include": ["**/*.ts"]
+}
