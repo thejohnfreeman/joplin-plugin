@@ -20,6 +20,6 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "pipeline": "node src/pipeline.js",
-    "transform": "node src/transform.js"
+    "test": "jest test/"
   }
 }
