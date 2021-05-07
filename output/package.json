@@ -1,12 +1,19 @@
 {
-  "name": "joplin-plugin-api",
+  "name": "joplin-plugin",
   "version": "1.7.3",
-  "description": "Types for the Joplin Plugin API",
-  "main": "src/index.ts",
-  "repository": "https://github.com/thejohnfreeman/joplin-plugin-api",
+  "description": "Types and tools for Joplin plugins",
+  "repository": "https://github.com/thejohnfreeman/joplin-plugin",
   "author": "Laurent Cozic",
   "contributors": [
     "John Freeman <jfreeman08@gmail.com>"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "types": "./src/api/index.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "tsc --noEmit --project test/example/tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  }
 }
