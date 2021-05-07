@@ -5,6 +5,7 @@ import * as ts from 'typescript'
 export async function readConfig(
   fileName: string
 ): Promise<ts.ParsedCommandLine> {
+  // TODO: https://stackoverflow.com/a/53898219/618906
   let basePath = path.dirname(fileName)
   let jsonText = await fs.readFile(fileName, 'utf8')
   let { config: json, error } = ts.parseConfigFileTextToJson(fileName, jsonText)

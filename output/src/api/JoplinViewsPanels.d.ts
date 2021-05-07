@@ -1,3 +1,4 @@
+type Plugin = any;
 import { ViewHandle } from './types';
 /**
  * Allows creating and managing view panels. View panels currently are
@@ -9,6 +10,10 @@ import { ViewHandle } from './types';
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/toc)
  */
 export default class JoplinViewsPanels {
+    private store;
+    private plugin;
+    constructor(plugin: Plugin, store: any);
+    private controller;
     /**
      * Creates a new panel
      */

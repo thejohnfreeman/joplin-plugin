@@ -63,13 +63,9 @@ async function pipeline(
 }
 
 async function main() {
-  /* const tsConfigFileName = */
-  /*   '/home/jfreeman/code/joplin-plugin-api/test/examples/tsconfig.json' */
-  /* const tsConfigFileName = 'test/examples/tsconfig.json' */
   const tsConfigFileName = 'joplin/packages/lib/tsconfig.json'
-  /* const submodule = 'test/examples' */
   const submodule = 'services/plugins/api'
-  const declarationDir = 'decls'
+  const declarationDir = 'output/src/api'
   await pipeline(tsConfigFileName, submodule, declarationDir)
 }
 

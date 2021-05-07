@@ -1,3 +1,4 @@
+type Plugin = any;
 import { ButtonSpec, ViewHandle, DialogResult } from './types';
 /**
  * Allows creating and managing dialogs. A dialog is modal window that
@@ -29,6 +30,11 @@ import { ButtonSpec, ViewHandle, DialogResult } from './types';
  * plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/dialog)
  */
 export default class JoplinViewsDialogs {
+    private store;
+    private plugin;
+    private implementation_;
+    constructor(implementation: any, plugin: Plugin, store: any);
+    private controller;
     /**
      * Creates a new dialog
      */
