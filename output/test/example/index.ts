@@ -1,4 +1,4 @@
-import joplin from '../../output'
+import joplin from '../..'
 
 async function main() {
   return joplin.settings.value(123)
