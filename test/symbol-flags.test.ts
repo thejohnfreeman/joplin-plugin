@@ -40,6 +40,9 @@ test('examples', async () => {
   expectIdToAlias(typeChecker, ids[2], ts.SymbolFlags.BlockScopedVariable)
   expectIdToAlias(typeChecker, ids[3], ts.SymbolFlags.NamespaceModule)
 
+  expect(bindings.elements[3].name.text).toBe('ns')
+  expect(bindings.elements[3].propertyName.text).toBe('MyNamespace')
+
   // import * as Exports from './exports'
   importDecl = sourceFile.statements[2] as ts.ImportDeclaration
   importClause = importDecl.importClause

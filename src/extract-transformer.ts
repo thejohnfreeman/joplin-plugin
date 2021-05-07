@@ -24,6 +24,38 @@ class ModuleResolver {
   }
 }
 
+function unalias(typeChecker: ts.TypeChecker, id: ts.Identifier): ts.Symbol {
+  let symbol = typeChecker.getSymbolAtLocation(id)
+  while (symbol.flags === ts.SymbolFlags.Alias) {
+    symbol = typeChecker.getAliasedSymbol(symbol)
+  }
+  return symbol
+}
+
+function getImportedIdentifiers(
+  importDecl: ts.ImportDeclaration
+): ts.Identifier[] {
+  const bindings = importDecl.importClause.namedBindings
+  if (!bindings) {
+    return [importDecl.importClause.name]
+  }
+  if (bindings.kind === ts.SyntaxKind.NamedImports) {
+    return bindings.elements.map((element) => element.name)
+  }
+  console.assert(bindings.kind === ts.SyntaxKind.NamespaceImport)
+  return [bindings.name]
+}
+
+function getImportedSymbols(
+  typeChecker: ts.TypeChecker,
+  importDecl: ts.ImportDeclaration
+): [ts.Identifier, ts.Symbol][] {
+  return getImportedIdentifiers(importDecl).map((id) => [
+    id,
+    unalias(typeChecker, id),
+  ])
+}
+
 /**
  * A transformer that extracts a submodule from a larger module.
  *
@@ -45,17 +77,26 @@ export class ExtractTransformer {
     if (this.moduleResolver.moduleExists(spec.text)) {
       return decl
     }
-    console.log(`removed import: ${spec.text}`)
     // TODO: Stub depending on imported aliases.
-    // import { Name } from 'module'
-    /* node = importDecl.importClause.namedBindings.elements[0].name */
-    // import Name from 'module'
-    /* node = importDecl.importClause.name */
-    /* alias = this.typeChecker.getSymbolAtLocation(node) */
-    /* console.assert(symbol.flags == ts.SymbolFlags.Alias) */
-    /* symbol = this.typeChecker.getAliasedSymbol(alias) */
-    /* ts.SymbolFlags[symbol.flags] */
-    return null
+    console.log(`removed import: ${spec.text}`)
+    const symbols = getImportedSymbols(this.typeChecker, decl)
+    return symbols.map(([id, symbol]) => this.substituteSymbol(id, symbol))
+  }
+
+  private substituteSymbol(id: ts.Identifier, symbol: ts.Symbol): ts.Statement {
+    switch (symbol.flags) {
+      case ts.SymbolFlags.Class:
+      case ts.SymbolFlags.Interface:
+        return ts.factory.createTypeAliasDeclaration(
+          [],
+          [],
+          id,
+          [],
+          ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+        )
+      default:
+        throw `unhandled symbol type: ${ts.SymbolFlags[symbol.flags]}`
+    }
   }
 
   private visitPropertyDeclaration(decl: ts.PropertyDeclaration) {
@@ -71,7 +112,7 @@ export class ExtractTransformer {
   }
 
   /* @CALL_STACK.log((node: ts.Node) => ts.SyntaxKind[node.kind]) */
-  public visitNode(node: ts.Node) {
+  private visitNode(node: ts.Node) {
     switch (node.kind) {
       case ts.SyntaxKind.ImportDeclaration:
         return this.visitImportDeclaration(node as ts.ImportDeclaration)
