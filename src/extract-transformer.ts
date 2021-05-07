@@ -33,11 +33,11 @@ function unalias(typeChecker: ts.TypeChecker, id: ts.Identifier): ts.Symbol {
 }
 
 function getImportedIdentifiers(
-  importDecl: ts.ImportDeclaration
+  importClause: ts.ImportClause
 ): ts.Identifier[] {
-  const bindings = importDecl.importClause.namedBindings
+  const bindings = importClause.namedBindings
   if (!bindings) {
-    return [importDecl.importClause.name]
+    return [importClause.name]
   }
   if (bindings.kind === ts.SyntaxKind.NamedImports) {
     return bindings.elements.map((element) => element.name)
@@ -48,9 +48,9 @@ function getImportedIdentifiers(
 
 function getImportedSymbols(
   typeChecker: ts.TypeChecker,
-  importDecl: ts.ImportDeclaration
+  importClause: ts.ImportClause
 ): [ts.Identifier, ts.Symbol][] {
-  return getImportedIdentifiers(importDecl).map((id) => [
+  return getImportedIdentifiers(importClause).map((id) => [
     id,
     unalias(typeChecker, id),
   ])
@@ -72,14 +72,12 @@ export class ExtractTransformer {
   private visit = (node: ts.Node) => this.visitNode(node)
 
   private visitImportDeclaration(decl: ts.ImportDeclaration) {
-    // Remove import if the module cannot be found.
+    // Substitute symbols from dangling foreign imports.
     const spec = decl.moduleSpecifier as ts.StringLiteral
     if (this.moduleResolver.moduleExists(spec.text)) {
       return decl
     }
-    // TODO: Stub depending on imported aliases.
-    console.log(`removed import: ${spec.text}`)
-    const symbols = getImportedSymbols(this.typeChecker, decl)
+    const symbols = getImportedSymbols(this.typeChecker, decl.importClause)
     return symbols.map(([id, symbol]) => this.substituteSymbol(id, symbol))
   }
 

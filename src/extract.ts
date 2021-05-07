@@ -19,7 +19,7 @@ function relocate(before: string, after: string): ts.WriteFileCallback {
   }
 }
 
-async function pipeline(
+export async function extract(
   tsConfigFileName: string,
   submodule: string,
   declarationDir: string
@@ -42,7 +42,6 @@ async function pipeline(
     .filter((sourceFile) => isBeneath(sourceFile.fileName, submoduleDirectory))
   // Emit the files of the submodule, transforming them.
   for (const sourceFile of sourceFiles) {
-    console.debug(sourceFile.fileName)
     const result = program.emit(
       sourceFile,
       relocate(path.join(declarationDir, submodule), declarationDir),
@@ -61,12 +60,3 @@ async function pipeline(
     console.assert(!result.emitSkipped)
   }
 }
-
-async function main() {
-  const tsConfigFileName = 'joplin/packages/lib/tsconfig.json'
-  const submodule = 'services/plugins/api'
-  const declarationDir = 'output/src/api'
-  await pipeline(tsConfigFileName, submodule, declarationDir)
-}
-
-main().catch(console.error)

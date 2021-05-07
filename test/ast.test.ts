@@ -12,11 +12,11 @@ function expectIdToAlias(
   expect(symbol.flags).toBe(flag)
 }
 
-test('examples', async () => {
-  const program = await openProject('test/examples/tsconfig.json')
+test('ast', async () => {
+  const program = await openProject('test/ast/tsconfig.json')
   expect(program).toBeTruthy()
   const typeChecker = program.getTypeChecker()
-  const sourceFile = program.getSourceFile('test/examples/imports.ts')
+  const sourceFile = program.getSourceFile('test/ast/imports.ts')
   expect(program.getSourceFiles().length).toBe(2)
 
   // import MyNamespace from './exports'
