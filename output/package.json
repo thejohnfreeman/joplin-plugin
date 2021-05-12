@@ -8,12 +8,17 @@
     "John Freeman <jfreeman08@gmail.com>"
   ],
   "license": "MIT",
-  "types": "./src/api/index.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/api/*"
+      ]
+    }
+  },
   "scripts": {
-    "build": "tsc --project tsconfig.json",
     "test": "tsc --noEmit --project test/example/tsconfig.json"
   },
   "devDependencies": {
-    "typescript": "^4.2.3"
+    "typescript": "^4.0.0"
   }
 }
