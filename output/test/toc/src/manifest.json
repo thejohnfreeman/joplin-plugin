@@ -1,9 +1,9 @@
 {
-  "id": "org.joplinapp.plugins.TocDemo",
+  "id": "dev.jfreeman.joplin.toc",
   "manifest_version": 1,
   "app_min_version": "1.4",
-  "name": "Webview test",
+  "name": "Table of Contents",
   "version": "1.0.0",
-  "homepage_url": "https://joplinapp.org",
-  "keywords": ["table of content", "toc"]
+  "homepage_url": "https://github.com/thejohnfreeman/joplin-plugin/output/test/toc",
+  "keywords": ["table of contents", "toc"]
 }

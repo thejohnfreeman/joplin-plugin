@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["es2016", "dom"],
-    "outDir": "./dist/",
-    "module": "commonjs",
-    "target": "es2015",
     "jsx": "react",
-    "allowJs": true,
-    "baseUrl": "."
+    "moduleResolution": "node"
   }
 }

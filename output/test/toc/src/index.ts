@@ -1,7 +1,7 @@
-import joplin from 'api'
-import { ToolbarButtonLocation } from 'api/types'
+import joplin from 'joplin-plugin'
+import { ToolbarButtonLocation } from 'joplin-plugin/types'
 
-const uslug = require('uslug')
+import uslug from 'uslug'
 
 // From https://stackoverflow.com/a/6234804/561309
 function escapeHtml(unsafe: string) {
@@ -42,7 +42,7 @@ joplin.plugins.register({
   onStart: async function () {
     const panels = joplin.views.panels
 
-    const view = await (panels as any).create()
+    const view = await panels.create('toc')
 
     await panels.setHtml(view, 'Loading...')
     await panels.addScript(view, './webview.js')
