@@ -43,7 +43,13 @@ export const defaultConfigs = [
     plugins: [
       nodeResolve(),
       commonjs(),
-      typescript(),
+      typescript({
+        tsconfigOverride: {
+          compilerOptions: {
+            module: 'es2015',
+          },
+        },
+      }),
       copy({
         targets: [{ src: ['src/**/*', '!src/**/*.ts{,x}'], dest: 'dist' }],
       }),

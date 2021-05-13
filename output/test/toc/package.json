@@ -2,8 +2,7 @@
   "name": "joplin-plugin-toc",
   "version": "1.0.0",
   "scripts": {
-    "build": "joplin-plugin-build",
-    "pack": "joplin-plugin-pack"
+    "build": "joplin-plugin-build && joplin-plugin-pack"
   },
   "keywords": [
     "joplin-plugin"
