@@ -1,6 +1,6 @@
 type FolderEntity = any;
 import { Disposable } from './types';
-declare enum ItemChangeEventType {
+enum ItemChangeEventType {
     Create = 1,
     Update = 2,
     Delete = 3

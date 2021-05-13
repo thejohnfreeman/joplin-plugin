@@ -38,11 +38,11 @@ export interface Command {
      */
     enabledCondition?: string;
 }
-export declare enum FileSystemItem {
+export enum FileSystemItem {
     File = "file",
     Directory = "directory"
 }
-export declare enum ImportModuleOutputFormat {
+export enum ImportModuleOutputFormat {
     Markdown = "md",
     Html = "html"
 }
@@ -153,7 +153,7 @@ export interface Disposable {
 export interface CreateMenuItemOptions {
     accelerator: string;
 }
-export declare enum MenuItemLocation {
+export enum MenuItemLocation {
     File = "file",
     Edit = "edit",
     View = "view",
@@ -213,7 +213,7 @@ export interface ButtonSpec {
     onClick?(): void;
 }
 export declare type ButtonId = string;
-export declare enum ToolbarButtonLocation {
+export enum ToolbarButtonLocation {
     /**
      * This toolbar in the top right corner of the application. It applies to the note as a whole, including its metadata.
      */
@@ -232,7 +232,7 @@ export interface DialogResult {
     id: ButtonId;
     formData?: any;
 }
-export declare enum SettingItemType {
+export enum SettingItemType {
     Int = 1,
     String = 2,
     Bool = 3,
@@ -288,7 +288,7 @@ export interface ContentScriptContext {
      */
     postMessage: PostMessageHandler;
 }
-export declare enum ContentScriptType {
+export enum ContentScriptType {
     /**
      * Registers a new Markdown-It plugin, which should follow the template
      * below.
