@@ -8,6 +8,12 @@
     "John Freeman <jfreeman08@gmail.com>"
   ],
   "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./rollup": "./src/rollup.js",
+    ".": "./src/api/index.ts",
+    "./*": "./src/api/*.ts"
+  },
   "typesVersions": {
     "*": {
       "*": [
@@ -20,5 +26,12 @@
   },
   "devDependencies": {
     "typescript": "^4.0.0"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0"
   }
 }

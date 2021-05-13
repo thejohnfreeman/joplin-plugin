@@ -4,19 +4,19 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 
-import joplinConfig from './plugin.config.json'
+export function rollupExtraScripts(extraScripts) {
+  return extraScripts.map((relative) => ({
+    input: `src/${relative}`,
+    output: {
+      // TODO: Remove .ts extension.
+      file: `dist/${relative}.js`,
+      format: 'iife',
+    },
+    plugins: [typescript()],
+  }))
+}
 
-const extras = joplinConfig.extraScripts.map((relative) => ({
-  input: `src/${relative}`,
-  output: {
-    // TODO: Remove .ts extension.
-    file: `dist/${relative}.js`,
-    format: 'iife',
-  },
-  plugins: [typescript()],
-}))
-
-export default [
+export const config = [
   {
     input: 'src/index.ts',
     output: {
@@ -33,5 +33,6 @@ export default [
       terser(),
     ],
   },
-  ...extras,
 ]
+
+export default config
