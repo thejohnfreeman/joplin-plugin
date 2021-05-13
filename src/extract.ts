@@ -1,3 +1,4 @@
+import * as fs from 'fs-extra'
 import * as path from 'path'
 import * as ts from 'typescript'
 
@@ -5,15 +6,9 @@ import { isBeneath } from './path'
 import { readConfig } from './project'
 import { ExtractTransformer } from './extract-transformer'
 
-function relocate(before: string, after: string): ts.WriteFileCallback {
-  return function writeFile(
-    fileName,
-    data,
-    writeByteOrderMark,
-    onError,
-    sourceFiles
-  ) {
-    const suffix = path.relative(before, fileName)
+export function relocate(before: string, after: string): ts.WriteFileCallback {
+  return function writeFile(fileName, data, writeByteOrderMark) {
+    const suffix = path.relative(before, fileName).replace(/.d.ts$/, '.ts')
     fileName = path.join(after, suffix)
     return ts.sys.writeFile(fileName, data, writeByteOrderMark)
   }
@@ -22,7 +17,7 @@ function relocate(before: string, after: string): ts.WriteFileCallback {
 export async function extract(
   tsConfigFileName: string,
   submodule: string,
-  declarationDir: string
+  outDir: string
 ) {
   tsConfigFileName = path.resolve(tsConfigFileName)
   const submoduleDirectory = path.join(
@@ -33,7 +28,7 @@ export async function extract(
   const config = await readConfig(tsConfigFileName)
   config.options.emitDeclarationOnly = true
   config.options.declaration = true
-  config.options.declarationDir = declarationDir
+  config.options.declarationDir = outDir
   const program = ts.createProgram(config.fileNames, config.options)
   const typeChecker = program.getTypeChecker()
   // Select the files in the submodule.
@@ -41,10 +36,13 @@ export async function extract(
     .getSourceFiles()
     .filter((sourceFile) => isBeneath(sourceFile.fileName, submoduleDirectory))
   // Emit the files of the submodule, transforming them.
-  for (const sourceFile of sourceFiles) {
+  // TypeScript already analyzes which imports are used when it emits
+  // declarations. In the absence of a lower-level API for that analysis, we
+  // just emit the declarations, and remove the `declare` modifier.
+  function emit(sourceFile) {
     const result = program.emit(
       sourceFile,
-      relocate(path.join(declarationDir, submodule), declarationDir),
+      relocate(path.join(outDir, submodule), outDir),
       /*cancellationToken=*/ null,
       /*emitOnlyDtsFiles=*/ true,
       {
@@ -57,6 +55,10 @@ export async function extract(
         ],
       }
     )
-    console.assert(!result.emitSkipped)
+    return result.emitSkipped
+  }
+  const skipped = sourceFiles.filter(emit).map((sf) => sf.fileName)
+  if (skipped.length > 0) {
+    throw `failed to emit: ${skipped}`
   }
 }

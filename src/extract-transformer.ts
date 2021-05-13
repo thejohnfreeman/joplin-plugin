@@ -85,15 +85,23 @@ export class ExtractTransformer {
     switch (symbol.flags) {
       case ts.SymbolFlags.Class:
       case ts.SymbolFlags.Interface:
-        return ts.factory.createTypeAliasDeclaration(
-          [],
-          [],
+        const decorators = []
+        const modifiers = []
+        const typeParameters = []
+        const type = this.context.factory.createKeywordTypeNode(
+          ts.SyntaxKind.AnyKeyword
+        )
+        return this.context.factory.createTypeAliasDeclaration(
+          decorators,
+          modifiers,
           id,
-          [],
-          ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+          typeParameters,
+          type
         )
       default:
-        throw `unhandled symbol type: ${ts.SymbolFlags[symbol.flags]}`
+        throw `unhandled symbol type for ${id.text}: ${
+          ts.SymbolFlags[symbol.flags]
+        }`
     }
   }
 
@@ -109,11 +117,26 @@ export class ExtractTransformer {
     return decl
   }
 
+  private visitEnumDeclaration(node: ts.EnumDeclaration) {
+    node = ts.visitEachChild(node, this.visit, this.context)
+    const modifiers = node.modifiers?.filter(
+      (modifier) => modifier.kind != ts.SyntaxKind.DeclareKeyword
+    )
+    return this.context.factory.createEnumDeclaration(
+      node.decorators,
+      modifiers,
+      node.name,
+      node.members
+    )
+  }
+
   /* @CALL_STACK.log((node: ts.Node) => ts.SyntaxKind[node.kind]) */
   private visitNode(node: ts.Node) {
     switch (node.kind) {
       case ts.SyntaxKind.ImportDeclaration:
         return this.visitImportDeclaration(node as ts.ImportDeclaration)
+      case ts.SyntaxKind.EnumDeclaration:
+        return this.visitEnumDeclaration(node as ts.EnumDeclaration)
       /* case ts.SyntaxKind.PropertyDeclaration: */
       /*   return this.visitPropertyDeclaration(node as ts.PropertyDeclaration) */
     }

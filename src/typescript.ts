@@ -1,4 +1,17 @@
+// Helpers for the TypeScript API
+import * as path from 'path'
 import * as ts from 'typescript'
+
+export function transform(
+  sourceFile: ts.SourceFile,
+  factory: ts.TransformerFactory<ts.SourceFile>
+): ts.SourceFile {
+  try {
+    return ts.transform(sourceFile, [factory]).transformed[0]
+  } catch (cause) {
+    throw `failed to transform ${sourceFile.fileName}: ${cause}`
+  }
+}
 
 enum QuoteStyle {
   SingleAlways,
