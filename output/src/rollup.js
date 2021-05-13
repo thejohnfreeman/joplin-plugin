@@ -12,7 +12,7 @@ export function configureExtraScripts(extraScripts) {
     input: `src/${relative}`,
     output: {
       file: `dist/${relative.replace(/.ts$/, '.js')}`,
-      format: 'iife',
+      format: 'cjs',
     },
     plugins: [nodeResolve(), commonjs(), typescript(), terser()],
   }))

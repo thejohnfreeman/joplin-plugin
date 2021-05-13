@@ -39,3 +39,6 @@ In your TypeScript source code:
 
 This package includes NodeJS ES module "exports" that point to TypeScript
 sources just to quiet warnings from the plugin `@rollup/plugin-node-resolve`.
+
+This package uses the `typeVersions` field to simulate submodule exports for
+TypeScript.
