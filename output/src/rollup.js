@@ -1,22 +1,39 @@
+import fs from 'fs-extra'
+import path from 'path'
+
 import copy from 'rollup-plugin-copy'
 import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 
-export function rollupExtraScripts(extraScripts) {
+export function configureExtraScripts(extraScripts) {
   return extraScripts.map((relative) => ({
     input: `src/${relative}`,
     output: {
-      // TODO: Remove .ts extension.
-      file: `dist/${relative}.js`,
+      file: `dist/${relative.replace(/.ts$/, '.js')}`,
       format: 'iife',
     },
-    plugins: [typescript()],
+    plugins: [nodeResolve(), commonjs(), typescript(), terser()],
   }))
 }
 
-export const config = [
+export async function readPluginConfig() {
+  const pluginConfig = { extraScripts: [] }
+  try {
+    Object.assign(
+      pluginConfig,
+      await fs.readJson(path.join(process.cwd(), 'plugin.config.json'))
+    )
+  } catch (cause) {
+    if (cause.code !== 'ENOENT') {
+      throw cause
+    }
+  }
+  return pluginConfig
+}
+
+export const defaultConfigs = [
   {
     input: 'src/index.ts',
     output: {
@@ -35,4 +52,4 @@ export const config = [
   },
 ]
 
-export default config
+export default defaultConfigs

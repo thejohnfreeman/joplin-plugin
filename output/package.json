@@ -14,6 +14,9 @@
     ".": "./src/api/index.ts",
     "./*": "./src/api/*.ts"
   },
+  "bin": {
+    "joplin-plugin-build": "./src/build.js"
+  },
   "typesVersions": {
     "*": {
       "*": [
@@ -30,6 +33,7 @@
   "dependencies": {
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
+    "rollup": "^2.47.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0"

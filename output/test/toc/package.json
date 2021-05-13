@@ -2,8 +2,7 @@
   "name": "joplin-plugin-toc",
   "version": "1.0.0",
   "scripts": {
-    "rollup": "node --experimental-json-modules ./node_modules/.bin/rollup --config",
-    "tsc": "tsc --outDir out --module esnext"
+    "build": "joplin-plugin-build"
   },
   "keywords": [
     "joplin-plugin"
