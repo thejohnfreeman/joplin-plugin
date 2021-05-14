@@ -5,6 +5,23 @@ Types and tools for writing [Joplin][] plugins.
 [Joplin]: https://joplinapp.org/
 
 
+## Versioning
+
+This package is versioned after the version of Joplin from which it was
+extracted.
+In case multiple versions of this package must be published for a single
+version of Joplin, I attach a subversion to every release.
+In order for [semantic versioning][semver] to choose the latest subversion, I
+specify it as a pre-release identifier, and I never publish a version without
+a pre-release identifier.
+For the pre-release identifier format, I chose to use a single number starting
+at 0 and incrementing with each release.
+I anticipate releasing only one version of this package for most versions of
+Joplin, and thus most versions of this package will look like `1.2.3-0`.
+
+[semver]: https://semver.org/
+
+
 ## How to start a new plugin
 
 - Add a dependency on `joplin-plugin`

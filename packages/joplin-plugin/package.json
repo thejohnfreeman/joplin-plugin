@@ -1,11 +1,11 @@
 {
   "name": "joplin-plugin",
-  "version": "1.7.3",
+  "version": "1.7.3-0",
   "description": "Types and tools for Joplin plugins",
   "repository": "https://github.com/thejohnfreeman/joplin-plugin",
-  "author": "Laurent Cozic",
+  "author": "John Freeman <jfreeman08@gmail.com>",
   "contributors": [
-    "John Freeman <jfreeman08@gmail.com>"
+    "Laurent Cozic"
   ],
   "license": "MIT",
   "type": "module",
@@ -18,7 +18,9 @@
     "joplin-plugin-build": "./src/build.js",
     "joplin-plugin-pack": "./src/pack.js"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "typesVersions": {
     "*": {
       "*": [
@@ -29,18 +31,16 @@
   "scripts": {
     "test": "tsc --noEmit --project test/example/tsconfig.json"
   },
-  "devDependencies": {
-    "typescript": "^4.0.0"
-  },
   "dependencies": {
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
-    "crypto": "^1.0.1",
     "fast-glob": "^3.2.5",
+    "fs-extra": "^10.0.0",
     "rollup": "^2.47.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
-    "tar": "^6.1.0"
+    "tar": "^6.1.0",
+    "typescript": "^4.0.0"
   }
 }

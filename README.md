@@ -1,28 +1,37 @@
 # joplin-plugin
 
-This package constructs the `joplin-plugin` package that sits in the
-[`output`](./output) directory.
+This repository is organized as a [Lerna][] project.
 
-That package contains:
+[Lerna]: https://lerna.js.org/
 
-- Type declarations for the public Joplin Plugin API.
-- Two executables, `joplin-plugin-build` and `joplin-plugin-pack`, for
-    compiling and packaging a Joplin plugin.
 
-The process by which this package generates that package is thus:
+## Workflow
 
-- You edit the Git tag and version number in
-    [`pipeline.ts`](./src/pipeline.ts).
-- It updates the submodule at [`joplin`](./joplin) to that tag.
-- It [extracts][1] the public API from
-  [`joplin/packages/lib/services/plugins/api`][] to [`output/src/api`][].
+To publish a new version of `joplin-plugin` following a release of Joplin:
 
-[1]: https://github.com/laurent22/joplin/issues/4643#issuecomment-793567125
+1. Clone this repository and bootstrap the packages.
 
-The extraction method is to emit declarations (which removes imports that
-don't appear in type signatures), and then replace dangling foreign imports
-and remove the `declare` modifier from exported enumerations. Some plugins use
-the enumerations, which aren't attached to the global `joplin` object and
-don't exist as global objects. If they are exported with the `declare`
-modifier (or from a file ending in `.d.ts`), then they are not emitted by the
-TypeScript compiler, and thus they aren't bundled by Rollup.
+  ```
+  npx lerna bootstrap
+  ```
+
+1. From within the `extract` package,
+
+  1. Edit the parameters in `src/pipeline.ts`:
+
+    - `ref`: The GitHub reference from which to extract the source files.
+        Generally, this can be the tag matching the released version, but
+        double-check that `packages/lib/package.json` has the same version.
+    - `version`: The version of `joplin-plugin` that will be published. This
+        should include a prerelease identifier.
+
+  1. Compile: `yarn build`.
+  1. Run: `yarn run`.
+
+1. From within each `example-*` package, test that it can be built with no
+   errors: `yarn build`. If there are errors, it could be because the API
+   changed. In that case, it may be worth repairing the example to preserve it
+   as a useful test going forward. If not, just remove it.
+
+1. Commit the changes.
+1. Check that Lerna is aware the `joplin-plugin` package has changed: `npx lerna changed`.

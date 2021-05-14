@@ -1,26 +1,20 @@
 {
   "name": "joplin-plugin-toc",
   "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "joplin-plugin-build && joplin-plugin-pack"
   },
   "keywords": [
     "joplin-plugin"
   ],
-  "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^19.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/node": "^14.0.14",
-    "rollup": "^2.47.0",
-    "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.30.0",
-    "tslib": "^2.2.0",
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "joplin-plugin": "file:../..",
+    "joplin-plugin": "file:../joplin-plugin",
     "uslug": "^1.0.4"
   }
 }
