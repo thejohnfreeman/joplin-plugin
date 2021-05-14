@@ -1,4 +1,5 @@
 {
+  "name": "extract",
   "repository": "https://github.com/thejohnfreeman/joplin-plugin",
   "author": "John Freeman <jfreeman08@gmail.com>",
   "license": "MIT",
