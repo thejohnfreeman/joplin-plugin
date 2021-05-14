@@ -19,7 +19,7 @@ async function main() {
     throw new Error(`directory "${sourceDir}" is empty`)
   }
   await fs.remove(tarball)
-  await fs.mkdir(outDir)
+  await fs.mkdir(outDir, { recursive: true })
   tar.create(
     {
       strict: true,
