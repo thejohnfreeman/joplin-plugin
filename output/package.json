@@ -18,6 +18,7 @@
     "joplin-plugin-build": "./src/build.js",
     "joplin-plugin-pack": "./src/pack.js"
   },
+  "files": ["src"],
   "typesVersions": {
     "*": {
       "*": [
