@@ -39,8 +39,8 @@ In the filesystem:
 
 In `package.json`:
 
-- Remove dependencies on `copy-webpack-plugin`, `fs-extra`, `glob`,
-    `on-build-webpack`, `tar`, `ts-loader`, `webpack`, `webpack-cli`, `chalk`,
+- Remove dependencies on `chalk`, `copy-webpack-plugin`, `fs-extra`, `glob`,
+    `on-build-webpack`, `tar`, `ts-loader`, `webpack`, `webpack-cli`,
     and `yargs`.
 - Add a dependency on `joplin-plugin`.
 - Remove scripts for `dist`, `prepare`, and `update`.
