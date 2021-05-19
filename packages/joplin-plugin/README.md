@@ -1,4 +1,4 @@
-# joplin-plugin
+# @thejohnfreema/joplin-plugin
 
 Types and tools for writing [Joplin][] plugins.
 
@@ -45,7 +45,7 @@ In `package.json`:
 - Remove dependencies on `copy-webpack-plugin`, `fs-extra`, `glob`,
     `on-build-webpack`, `tar`, `ts-loader`, `webpack`, `webpack-cli`,
     `chalk`, and `yargs`.
-- Add a dependency on `joplin-plugin`.
+- Add a dependency on `@thejohnfreeman/joplin-plugin`.
 - Remove scripts for `dist`, `prepare`, and `update`.
 - Add a `build` script that is `joplin-plugin-build && joplin-plugin-pack`.
 
