@@ -2,16 +2,8 @@
   "name": "joplin-plugin-backlinks",
   "version": "2.0.10",
   "homepage": "https://discourse.joplinapp.org/t/insert-referencing-notes-backlinks-plugin/13632",
-  "description": "",
   "scripts": {
-    "dist": "webpack --joplin-plugin-config buildMain && webpack --joplin-plugin-config buildExtraScripts && webpack --joplin-plugin-config createArchive",
-    "postinstall": "npm run dist",
-    "distrun": "npm run dist && ~/.joplin/Joplin.AppImage --env dev",
-    "distrun2": "npm run dist && ~/Downloads/Joplin-1.7.11.AppImage --env dev",
-    "prepare": "npm run dist",
-    "update": "npm install -g generator-joplin && yo joplin --update",
-    "run": "~/.joplin/Joplin.AppImage --env dev"
-    
+    "build": "joplin-plugin-build && joplin-plugin-pack"
   },
   "keywords": [
     "joplin-plugin"
@@ -19,16 +11,9 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^14.0.14",
-    "copy-webpack-plugin": "^6.1.0",
-    "fs-extra": "^9.0.1",
-    "glob": "^7.1.6",
-    "on-build-webpack": "^0.1.0",
-    "tar": "^6.0.5",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.3",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "chalk": "^4.1.0",
-    "yargs": "^16.2.0"
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "joplin-plugin": "file:../joplin-plugin"
   }
 }
