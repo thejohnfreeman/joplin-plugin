@@ -41,10 +41,10 @@ async function main() {
   const upstreamDir = '../joplin'
   const downstreamDir = '../joplin-plugin'
   // The Git ref that we want to publish.
-  const ref = 'v1.8.5'
+  const ref = 'v2.0.1'
   // Often the version string in joplin/packages/lib/package.json does not
   // match the Git tag. Pass them separately.
-  const version = '1.8.5-0'
+  const version = '2.0.1-0'
   await pipeline(upstreamDir, downstreamDir, ref, version)
 }
 

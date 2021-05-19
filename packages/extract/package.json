@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "run": "node src/pipeline.js",
+    "start": "node src/pipeline.js",
     "test": "jest test/"
   }
 }
