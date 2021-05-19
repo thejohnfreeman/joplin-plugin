@@ -11,6 +11,7 @@ async function pipeline(
   ref: string,
   version: string
 ) {
+  await exec(['git', 'fetch', 'origin', ref], { cwd: upstreamDir })
   await exec(['git', 'checkout', '--force', ref], { cwd: upstreamDir })
   const tsConfigFileName = `${upstreamDir}/packages/lib/tsconfig.json`
   const submodule = 'services/plugins/api'
@@ -24,7 +25,7 @@ async function pipeline(
     await fs.rm(declarationDir, { recursive: true, force: true })
     await fs.copy(tmpDir, declarationDir)
     await fs.copy(
-      'joplin/packages/generator-joplin/generators/app/templates/api_index.ts',
+      `${upstreamDir}/packages/generator-joplin/generators/app/templates/api_index.ts`,
       `${declarationDir}/index.ts`
     )
   } finally {
@@ -40,10 +41,10 @@ async function main() {
   const upstreamDir = '../joplin'
   const downstreamDir = '../joplin-plugin'
   // The Git ref that we want to publish.
-  const ref = 'v1.7.3'
+  const ref = 'v1.8.5'
   // Often the version string in joplin/packages/lib/package.json does not
   // match the Git tag. Pass them separately.
-  const version = '1.7.3-0'
+  const version = '1.8.5-0'
   await pipeline(upstreamDir, downstreamDir, ref, version)
 }
 
