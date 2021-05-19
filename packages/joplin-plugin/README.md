@@ -27,7 +27,8 @@ Joplin, and thus most versions of this package will look like `1.2.3-0`.
 - Add a dependency on `joplin-plugin`
 - Add a `build` script that is `joplin-plugin-build && joplin-plugin-pack`.
 - Write your TypeScript source at `src/index.ts`.
-- Import the Joplin Plugin API with `import ... from 'joplin-plugin/...'`.
+- Import the Joplin object with `import joplin from 'joplin-plugin'`.
+- Import Joplin types with `import { NamedType } from 'joplin-plugin/types'`.
 
 
 ## How to convert an existing plugin
@@ -35,21 +36,23 @@ Joplin, and thus most versions of this package will look like `1.2.3-0`.
 In the filesystem:
 
 - Remove `GENERATOR_DOC.md`, `webpack.config.json`, and the directory `api`.
-- Remove `plugin.config.json` if it is simply `{extraScripts: []}` (or less).
+- Remove `plugin.config.json` if it is simply `{extraScripts: []}`, or if the
+    only `extraScripts` are `.js` files.
+- You can likely remove `tsconfig.json`.
 
 In `package.json`:
 
-- Remove dependencies on `chalk`, `copy-webpack-plugin`, `fs-extra`, `glob`,
+- Remove dependencies on `copy-webpack-plugin`, `fs-extra`, `glob`,
     `on-build-webpack`, `tar`, `ts-loader`, `webpack`, `webpack-cli`,
-    and `yargs`.
+    `chalk`, and `yargs`.
 - Add a dependency on `joplin-plugin`.
 - Remove scripts for `dist`, `prepare`, and `update`.
 - Add a `build` script that is `joplin-plugin-build && joplin-plugin-pack`.
 
 In your TypeScript source code:
 
-- Replace all instances of `import ... from 'api/...'` with `import ... from
-    'joplin-plugin/...'`.
+- Replace all imports of the `api` module with imports of the `joplin-plugin`
+    module.
 
 
 ## Notes
