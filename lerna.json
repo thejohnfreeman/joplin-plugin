@@ -1,9 +1,0 @@
-{
-  "npmClient": "yarn",
-  "packages": [
-    "packages/extract",
-    "packages/joplin-plugin",
-    "packages/example-*"
-  ],
-  "version": "independent"
-}
