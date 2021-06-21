@@ -24,7 +24,7 @@ Joplin, and thus most versions of this package will look like `1.2.3-0`.
 
 ## How to start a new plugin
 
-- Add a dependency on `joplin-plugin`
+- Add a dependency on `@thejohnfreeman/joplin-plugin`.
 - Add a `build` script that is `joplin-plugin-build && joplin-plugin-pack`.
 - Write your TypeScript source at `src/index.ts`.
 - Import the Joplin object with `import joplin from '@thejohnfreeman/joplin-plugin'`.
