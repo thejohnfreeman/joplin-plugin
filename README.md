@@ -1,5 +1,7 @@
 # joplin-plugin
 
+[![npm](https://img.shields.io/npm/v/@thejohnfreeman/joplin-plugin.svg)](https://www.npmjs.com/package/@thejohnfreeman/joplin-plugin)
+
 This repository has a few packages managed as Yarn workspaces.
 These are the packages:
 
