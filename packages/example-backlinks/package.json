@@ -15,6 +15,6 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
-    "joplin-plugin": "file:../joplin-plugin"
+    "@thejohnfreeman/joplin-plugin": "^2.0.0"
   }
 }

@@ -27,8 +27,8 @@ Joplin, and thus most versions of this package will look like `1.2.3-0`.
 - Add a dependency on `joplin-plugin`
 - Add a `build` script that is `joplin-plugin-build && joplin-plugin-pack`.
 - Write your TypeScript source at `src/index.ts`.
-- Import the Joplin object with `import joplin from 'joplin-plugin'`.
-- Import Joplin types with `import { NamedType } from 'joplin-plugin/types'`.
+- Import the Joplin object with `import joplin from '@thejohnfreeman/joplin-plugin'`.
+- Import Joplin types with `import { NamedType } from '@thejohnfreeman/joplin-plugin/types'`.
 
 
 ## How to convert an existing plugin
@@ -51,8 +51,8 @@ In `package.json`:
 
 In your TypeScript source code:
 
-- Replace all imports of the `api` module with imports of the `joplin-plugin`
-    module.
+- Replace all imports of the `api` module with imports of the
+    `@thejohnfreeman/joplin-plugin` module.
 
 
 ## Notes

@@ -3,11 +3,13 @@
   "workspaces": [
     "packages/extract",
     "packages/joplin-plugin",
-    "packages/example-toc",
-    "packages/example-backlinks"
+    "packages/example-*"
   ],
   "resolutions": {
     "**/@types/fs-extra": "^9.0.10",
     "**/fs-extra": "^9.0.10"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.1"
   }
 }

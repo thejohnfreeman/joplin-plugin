@@ -1,5 +1,5 @@
-import joplin from 'joplin-plugin'
-import { ToolbarButtonLocation } from 'joplin-plugin/types'
+import joplin from '@thejohnfreeman/joplin-plugin'
+import { ToolbarButtonLocation } from '@thejohnfreeman/joplin-plugin/types'
 
 import uslug from 'uslug'
 
