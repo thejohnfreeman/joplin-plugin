@@ -1,6 +1,6 @@
 {
   "name": "@thejohnfreeman/joplin-plugin",
-  "version": "2.0.1-1",
+  "version": "2.0.1-2",
   "description": "Types and tools for Joplin plugins",
   "repository": "https://github.com/thejohnfreeman/joplin-plugin",
   "author": "John Freeman <jfreeman08@gmail.com>",
