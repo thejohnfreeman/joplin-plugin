@@ -24,12 +24,14 @@ To publish a new version of `joplin-plugin` following a release of Joplin:
 1. Clone this repository and bootstrap the packages: `yarn install`.
 1. From within the `extract` package,
     1. Edit the parameters in `src/pipeline.ts`:
-        - `ref`: The GitHub reference from which to extract the source files.
-            Generally, this can be the tag matching the released version, but
-            double-check that `packages/lib/package.json` has the same
+        - `upstreamVersion`: The version of the Joplin source files.
+        - `upstreamRef`: The GitHub reference from which to extract the source
+            files. Generally, this can be the tag matching `upstreamVersion`,
+            but double-check that `packages/lib/package.json` has the same
             version.
-        - `version`: The version of `joplin-plugin` that will be published.
-            This should include a prerelease identifier.
+        - `downstreamVersion`: The version of `@thejohnfreeman/joplin-plugin`
+            that will be published. This should be `upstreamVersion` suffixed
+            with a prerelease identifier.
     1. Compile: `yarn build`.
     1. Run: `yarn start`.
 1. From within each `example-*` package, test that it can be built with no

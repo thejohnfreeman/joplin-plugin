@@ -1,5 +1,5 @@
-import joplin from 'joplin-plugin';
-import { MenuItemLocation, ToolbarButtonLocation, ContentScriptType } from 'joplin-plugin/types';
+import joplin from '@thejohnfreeman/joplin-plugin';
+import { MenuItemLocation, ToolbarButtonLocation, ContentScriptType } from '@thejohnfreeman/joplin-plugin/types';
 
 function escapeTitleText(text: string) {
 	return text.replace(/(\[|\])/g, '\\$1');
