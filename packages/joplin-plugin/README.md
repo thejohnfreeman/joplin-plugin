@@ -1,4 +1,4 @@
-# @thejohnfreema/joplin-plugin
+# @thejohnfreeman/joplin-plugin
 
 Types and tools for writing [Joplin][] plugins.
 
