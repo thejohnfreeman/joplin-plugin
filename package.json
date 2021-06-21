@@ -5,5 +5,9 @@
     "packages/joplin-plugin",
     "packages/example-toc",
     "packages/example-backlinks"
-  ]
+  ],
+  "resolutions": {
+    "**/@types/fs-extra": "^9.0.10",
+    "**/fs-extra": "^9.0.10"
+  }
 }
