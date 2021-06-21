@@ -7,12 +7,13 @@ import { exec } from './subprocess'
 // The paths used in this function are not Windows-safe.
 async function pipeline(
   upstreamDir: string,
+  upstreamVersion: string,
+  upstreamRef: string,
   downstreamDir: string,
-  ref: string,
-  version: string
+  downstreamVersion: string
 ) {
-  await exec(['git', 'fetch', 'origin', ref], { cwd: upstreamDir })
-  await exec(['git', 'checkout', '--force', ref], { cwd: upstreamDir })
+  await exec(['git', 'fetch', 'origin', upstreamRef], { cwd: upstreamDir })
+  await exec(['git', 'checkout', '--force', upstreamRef], { cwd: upstreamDir })
   const tsConfigFileName = `${upstreamDir}/packages/lib/tsconfig.json`
   const submodule = 'services/plugins/api'
   const declarationDir = `${downstreamDir}/src/api`
@@ -33,19 +34,28 @@ async function pipeline(
   }
   // Copy the version string.
   const json = await fs.readJson(`${downstreamDir}/package.json`)
-  json['version'] = version
+  json['version'] = downstreamVersion
   await fs.writeJson(`${downstreamDir}/package.json`, json, { spaces: 2 })
+  await fs.writeFile(
+    `${downstreamDir}/src/api/version.js`,
+    `const version = '${upstreamVersion}'\nexport default version\n`
+  )
 }
 
 async function main() {
   const upstreamDir = '../joplin'
-  const downstreamDir = '../joplin-plugin'
+  const upstreamVersion = '2.0.1'
   // The Git ref that we want to publish.
-  const ref = 'v2.0.1'
-  // Often the version string in joplin/packages/lib/package.json does not
-  // match the Git tag. Pass them separately.
-  const version = '2.0.1-0'
-  await pipeline(upstreamDir, downstreamDir, ref, version)
+  const upstreamRef = `v${upstreamVersion}`
+  const downstreamDir = '../joplin-plugin'
+  const downstreamVersion = `${upstreamVersion}-0`
+  await pipeline(
+    upstreamDir,
+    upstreamVersion,
+    upstreamRef,
+    downstreamDir,
+    downstreamVersion
+  )
 }
 
 main().catch(console.error)
