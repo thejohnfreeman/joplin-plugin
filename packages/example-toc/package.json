@@ -2,6 +2,7 @@
   "name": "joplin-plugin-toc",
   "version": "1.0.0",
   "license": "MIT",
+  "homepage": "https://github.com/thejohnfreeman/joplin-plugin/tree/master/packages/example-toc",
   "private": true,
   "scripts": {
     "build": "joplin-plugin-build && joplin-plugin-pack"

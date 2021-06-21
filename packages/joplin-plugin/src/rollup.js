@@ -51,7 +51,7 @@ export const defaultConfigs = [
         },
       }),
       copy({
-        targets: [{ src: ['src/**/*', '!src/**/*.ts{,x}'], dest: 'dist' }],
+        targets: [{ src: ['src/**/*', '!src/**/*.ts{,x}', '!src/manifest.json'], dest: 'dist' }],
       }),
       terser(),
     ],
