@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "lib": ["es2016"],
-    // Ignore declaration files from other packages.
-    "types": []
-  },
-  "include": ["**/*.ts"]
-}
