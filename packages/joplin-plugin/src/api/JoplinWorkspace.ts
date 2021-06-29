@@ -1,6 +1,6 @@
 type FolderEntity = any;
 import { Disposable } from './types';
-enum ItemChangeEventType {
+declare enum ItemChangeEventType {
     Create = 1,
     Update = 2,
     Delete = 3
@@ -22,7 +22,7 @@ declare type SyncStartHandler = (event: SyncStartEvent) => void;
  *
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins)
  */
-export default class JoplinWorkspace {
+declare class JoplinWorkspace {
     private store;
     constructor(store: any);
     /**
@@ -66,4 +66,5 @@ export default class JoplinWorkspace {
      */
     selectedNoteIds(): Promise<string[]>;
 }
+export default JoplinWorkspace;
 export {};

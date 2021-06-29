@@ -11,7 +11,8 @@ import { ExportModule, ImportModule } from './types';
  *
  * You may also want to refer to the Joplin API documentation to see the list of properties for each item (note, notebook, etc.) - https://joplinapp.org/api/references/rest_api/
  */
-export default class JoplinInterop {
+declare class JoplinInterop {
     registerExportModule(module: ExportModule): Promise<void>;
     registerImportModule(module: ImportModule): Promise<void>;
 }
+export default JoplinInterop;

@@ -23,7 +23,7 @@ import JoplinContentScripts from './JoplinContentScripts';
  *
  * Eventually, the plugin API will be versioned to make this process smoother.
  */
-export default class Joplin {
+declare class Joplin {
     private data_;
     private plugins_;
     private workspace_;
@@ -63,3 +63,4 @@ export default class Joplin {
      */
     require(_path: string): any;
 }
+export default Joplin;

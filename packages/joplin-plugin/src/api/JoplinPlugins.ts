@@ -3,7 +3,7 @@ import { ContentScriptType, Script } from './types';
 /**
  * This class provides access to plugin-related features.
  */
-export default class JoplinPlugins {
+declare class JoplinPlugins {
     private plugin;
     constructor(plugin: Plugin);
     /**
@@ -41,3 +41,4 @@ export default class JoplinPlugins {
      */
     require(_path: string): any;
 }
+export default JoplinPlugins;

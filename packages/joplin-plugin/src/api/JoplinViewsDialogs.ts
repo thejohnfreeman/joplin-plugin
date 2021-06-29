@@ -29,7 +29,7 @@ import { ButtonSpec, ViewHandle, DialogResult } from './types';
  * [View the demo
  * plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/dialog)
  */
-export default class JoplinViewsDialogs {
+declare class JoplinViewsDialogs {
     private store;
     private plugin;
     private implementation_;
@@ -60,3 +60,4 @@ export default class JoplinViewsDialogs {
      */
     open(handle: ViewHandle): Promise<DialogResult>;
 }
+export default JoplinViewsDialogs;

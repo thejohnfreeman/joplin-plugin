@@ -10,7 +10,7 @@ import JoplinViewsPanels from './JoplinViewsPanels';
  * All view services provide a `create()` method which you would use to create the view object, whether it's a dialog, a toolbar button or a menu item.
  * In some cases, the `create()` method will return a [[ViewHandle]], which you would use to act on the view, for example to set certain properties or call some methods.
  */
-export default class JoplinViews {
+declare class JoplinViews {
     private store;
     private plugin;
     private dialogs_;
@@ -26,3 +26,4 @@ export default class JoplinViews {
     get menus(): JoplinViewsMenus;
     get toolbarButtons(): JoplinViewsToolbarButtons;
 }
+export default JoplinViews;

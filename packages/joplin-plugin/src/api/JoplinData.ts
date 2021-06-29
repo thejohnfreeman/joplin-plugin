@@ -35,7 +35,7 @@ import { Path } from './types';
  * await joplin.data.post(['notes'], null, { body: "my new note", title: "some title", parent_id: folders[0].id });
  * ```
  */
-export default class JoplinData {
+declare class JoplinData {
     private api_;
     private pathSegmentRegex_;
     private serializeApiBody;
@@ -45,3 +45,4 @@ export default class JoplinData {
     put(path: Path, query?: any, body?: any, files?: any[]): Promise<any>;
     delete(path: Path, query?: any): Promise<any>;
 }
+export default JoplinData;

@@ -5,7 +5,7 @@ type Plugin = any;
  *
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/register_command)
  */
-export default class JoplinViewsToolbarButtons {
+declare class JoplinViewsToolbarButtons {
     private store;
     private plugin;
     constructor(plugin: Plugin, store: any);
@@ -14,3 +14,4 @@ export default class JoplinViewsToolbarButtons {
      */
     create(id: string, commandName: string, location: ToolbarButtonLocation): Promise<void>;
 }
+export default JoplinViewsToolbarButtons;

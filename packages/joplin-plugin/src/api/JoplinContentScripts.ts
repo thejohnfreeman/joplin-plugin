@@ -1,6 +1,6 @@
 type Plugin = any;
 import { ContentScriptType } from './types';
-export default class JoplinContentScripts {
+declare class JoplinContentScripts {
     private plugin;
     constructor(plugin: Plugin);
     /**
@@ -38,3 +38,4 @@ export default class JoplinContentScripts {
      */
     onMessage(contentScriptId: string, callback: any): Promise<void>;
 }
+export default JoplinContentScripts;

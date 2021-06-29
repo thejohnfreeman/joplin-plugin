@@ -5,7 +5,7 @@ type Plugin = any;
  *
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/register_command)
  */
-export default class JoplinViewsMenuItems {
+declare class JoplinViewsMenuItems {
     private store;
     private plugin;
     constructor(plugin: Plugin, store: any);
@@ -14,3 +14,4 @@ export default class JoplinViewsMenuItems {
      */
     create(id: string, commandName: string, location?: MenuItemLocation, options?: CreateMenuItemOptions): Promise<void>;
 }
+export default JoplinViewsMenuItems;

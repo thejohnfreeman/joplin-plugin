@@ -20,7 +20,7 @@ import { Command } from './types';
  * To view what arguments are supported, you can open any of these files
  * and look at the `execute()` command.
  */
-export default class JoplinCommands {
+declare class JoplinCommands {
     /**
      * <span class="platform-desktop">desktop</span> Executes the given
      * command.
@@ -59,3 +59,4 @@ export default class JoplinCommands {
      */
     register(command: Command): Promise<void>;
 }
+export default JoplinCommands;

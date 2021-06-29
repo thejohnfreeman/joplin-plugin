@@ -5,7 +5,7 @@ type Plugin = any;
  *
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/menu)
  */
-export default class JoplinViewsMenus {
+declare class JoplinViewsMenus {
     private store;
     private plugin;
     constructor(plugin: Plugin, store: any);
@@ -16,3 +16,4 @@ export default class JoplinViewsMenus {
      */
     create(id: string, label: string, menuItems: MenuItem[], location?: MenuItemLocation): Promise<void>;
 }
+export default JoplinViewsMenus;

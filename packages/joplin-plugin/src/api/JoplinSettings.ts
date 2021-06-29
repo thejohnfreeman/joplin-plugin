@@ -16,7 +16,7 @@ export declare type ChangeHandler = (event: ChangeEvent) => void;
  *
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/settings)
  */
-export default class JoplinSettings {
+declare class JoplinSettings {
     private plugin_;
     constructor(plugin: Plugin);
     private get keyPrefix();
@@ -62,3 +62,4 @@ export default class JoplinSettings {
      */
     onChange(handler: ChangeHandler): Promise<void>;
 }
+export default JoplinSettings;

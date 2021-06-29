@@ -9,7 +9,7 @@ import { ViewHandle } from './types';
  *
  * [View the demo plugin](https://github.com/laurent22/joplin/tree/dev/packages/app-cli/tests/support/plugins/toc)
  */
-export default class JoplinViewsPanels {
+declare class JoplinViewsPanels {
     private store;
     private plugin;
     constructor(plugin: Plugin, store: any);
@@ -59,3 +59,4 @@ export default class JoplinViewsPanels {
      */
     visible(handle: ViewHandle): Promise<boolean>;
 }
+export default JoplinViewsPanels;
