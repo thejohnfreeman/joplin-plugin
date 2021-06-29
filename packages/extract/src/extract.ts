@@ -20,10 +20,7 @@ export async function extract(
   outDir: string
 ) {
   tsConfigFileName = path.resolve(tsConfigFileName)
-  const submoduleInDir = path.join(
-    path.dirname(tsConfigFileName),
-    submodule
-  )
+  const submoduleInDir = path.join(path.dirname(tsConfigFileName), submodule)
   // Open the project.
   const config = await readConfig(tsConfigFileName)
   config.options.emitDeclarationOnly = true
@@ -37,8 +34,11 @@ export async function extract(
     .filter((sourceFile) => isBeneath(sourceFile.fileName, submoduleInDir))
   // Under the `declarationDir`, the compiler will replicate the
   // directory structure that is rooted at the common source directory.
-  // @ts-ignore
-  const submoduleOutDir = path.join(outDir, path.relative(program.getCommonSourceDirectory(), submoduleInDir))
+  const submoduleOutDir = path.join(
+    outDir,
+    // @ts-ignore: missing property getCommonSourceDirectory
+    path.relative(program.getCommonSourceDirectory(), submoduleInDir)
+  )
   // Emit the files of the submodule, transforming them.
   // TypeScript already analyzes which imports are used when it emits
   // declarations. In the absence of a lower-level API for that analysis, we
@@ -51,11 +51,7 @@ export async function extract(
       /*emitOnlyDtsFiles=*/ true,
       {
         afterDeclarations: [
-          ExtractTransformer.factory(
-            typeChecker,
-            submoduleInDir,
-            sourceFile
-          ),
+          ExtractTransformer.factory(typeChecker, submoduleInDir, sourceFile),
         ],
       }
     )

@@ -3,6 +3,16 @@ import * as ts from 'typescript'
 
 import { isBeneath } from './path'
 
+function partition<T>(set: T[], predicate: (item: T) => boolean) {
+  const trues = []
+  const falses = []
+  for (const item of set) {
+    const choice = predicate(item) ? trues : falses
+    choice.push(item)
+  }
+  return [trues, falses]
+}
+
 class ModuleResolver {
   public constructor(
     // It's ok if these are both relative as long as they are relative to the
@@ -65,6 +75,7 @@ function getImportedSymbols(
 export class ExtractTransformer {
   public constructor(
     private context: ts.TransformationContext,
+    private sourceFile: ts.SourceFile,
     private typeChecker: ts.TypeChecker,
     private moduleResolver: ModuleResolver
   ) {}
@@ -117,17 +128,85 @@ export class ExtractTransformer {
     return decl
   }
 
-  private visitEnumDeclaration(node: ts.EnumDeclaration) {
-    node = ts.visitEachChild(node, this.visit, this.context)
-    const modifiers = node.modifiers?.filter(
+  private visitEnumDeclaration(decl: ts.EnumDeclaration) {
+    // Emit exported enumerations.
+    decl = ts.visitEachChild(decl, this.visit, this.context)
+    if (
+      !decl.modifiers?.some(
+        (modifier) => modifier.kind == ts.SyntaxKind.ExportKeyword
+      )
+    ) {
+      return decl
+    }
+    const modifiers = decl.modifiers?.filter(
       (modifier) => modifier.kind != ts.SyntaxKind.DeclareKeyword
     )
     return this.context.factory.createEnumDeclaration(
-      node.decorators,
+      decl.decorators,
       modifiers,
-      node.name,
-      node.members
+      decl.name,
+      decl.members
     )
+  }
+
+  private visitClassDeclaration(classDecl: ts.ClassDeclaration) {
+    // Do not emit classes.
+    const factory = this.context.factory
+    const modifierFlags = ts.getCombinedModifierFlags(classDecl)
+    const classModifierFlags =
+      (modifierFlags & ~ts.ModifierFlags.ExportDefault) |
+      ts.ModifierFlags.Ambient
+    const comments =
+      ts.getLeadingCommentRanges(this.sourceFile.text, classDecl.pos) || []
+    classDecl = factory.createClassDeclaration(
+      classDecl.decorators,
+      factory.createModifiersFromModifierFlags(classModifierFlags),
+      classDecl.name,
+      classDecl.typeParameters,
+      classDecl.heritageClauses,
+      classDecl.members
+    )
+    for (const comment of comments) {
+      if (comment.kind == ts.SyntaxKind.SingleLineCommentTrivia) {
+        continue
+      }
+      // Cut two characters from the ends for the multi-line comment
+      // delimiters.
+      const text = this.sourceFile.text.substring(
+        comment.pos + 2,
+        comment.end - 2
+      )
+      ts.addSyntheticLeadingComment(
+        classDecl,
+        comment.kind,
+        text,
+        comment.hasTrailingNewLine
+      )
+    }
+    if (!(modifierFlags & ts.ModifierFlags.Export)) {
+      return classDecl
+    }
+    const exportDecl =
+      modifierFlags & ts.ModifierFlags.Default
+        ? factory.createExportAssignment(
+            /*decorators=*/ undefined,
+            /*modifiers=*/ undefined,
+            /*isExportEquals=*/ false,
+            classDecl.name
+          )
+        : factory.createExportDeclaration(
+            /*decorators=*/ undefined,
+            /*modifiers=*/ undefined,
+            /*isTypeOnly=*/ false,
+            factory.createNamedExports([
+              factory.createExportSpecifier(
+                /*propertyName=*/ undefined,
+                classDecl.name
+              ),
+            ]),
+            /*moduleSpecifier=*/ undefined
+          )
+    return [classDecl, exportDecl]
   }
 
   /* @CALL_STACK.log((node: ts.Node) => ts.SyntaxKind[node.kind]) */
@@ -137,6 +216,8 @@ export class ExtractTransformer {
         return this.visitImportDeclaration(node as ts.ImportDeclaration)
       case ts.SyntaxKind.EnumDeclaration:
         return this.visitEnumDeclaration(node as ts.EnumDeclaration)
+      case ts.SyntaxKind.ClassDeclaration:
+        return this.visitClassDeclaration(node as ts.ClassDeclaration)
       /* case ts.SyntaxKind.PropertyDeclaration: */
       /*   return this.visitPropertyDeclaration(node as ts.PropertyDeclaration) */
     }
@@ -162,6 +243,7 @@ export class ExtractTransformer {
       )
       const transformer = new ExtractTransformer(
         context,
+        sourceFile,
         typeChecker,
         moduleResolver
       )
