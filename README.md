@@ -38,5 +38,8 @@ To publish a new version of `joplin-plugin` following a release of Joplin:
    errors: `yarn build`. If there are errors, it could be because the API
    changed. In that case, it may be worth repairing the example to preserve it
    as a useful test going forward. If not, just remove it.
-1. From within the `joplin-plugin` package, publish it to NPM: `yarn publish`.
-1. Commit, tag, and push the changes.
+1. Commit the changes. Stash any unwanted changes.
+1. From within the `joplin-plugin` package:
+    1. Bump the version: `yarn version`.
+    1. Publish to NPM: `yarn publish`.
+1. Push the new head and tag to GitHub.
