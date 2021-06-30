@@ -12,10 +12,12 @@ popd
 
 pushd packages/joplin-plugin
 yarn test
-yarn pack --filename ../test/joplin-plugin.tgz
+yarn pack --filename ../joplin-plugin.tgz
 popd
 
-pushd packages/test
-yarn
-yarn build
-popd
+for dir in packages/test*; do
+  pushd ${dir}
+  yarn
+  yarn build
+  popd
+done

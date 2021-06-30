@@ -21,8 +21,19 @@ async function build(config) {
   await bundle.close()
 }
 
+async function readManifest(path) {
+  try {
+    return await fs.readJson(path)
+  } catch (error) {
+    if (error.code == 'ENOENT') {
+      return {}
+    }
+    throw error
+  }
+}
+
 async function buildManifest() {
-  const overrides = await fs.readJson('src/manifest.json')
+  const overrides = await readManifest('src/manifest.json')
   const meta = await fs.readJson('package.json')
   const manifest = {
     manifest_version: 1,

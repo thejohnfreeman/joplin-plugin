@@ -8,15 +8,15 @@ import tar from 'tar'
 import crypto from 'crypto'
 
 async function main() {
-  const sourceDir = 'dist'
+  const inDir = 'dist'
   const outDir = 'publish'
 
-  const manifest = await fs.readJson(path.join(sourceDir, 'manifest.json'))
+  const manifest = await fs.readJson(path.join(inDir, 'manifest.json'))
   const tarball = `${outDir}/${manifest.id}.jpl`
 
-  const files = await glob(`**/*`, { cwd: sourceDir, onlyFiles: true })
+  const files = await glob(`**/*`, { cwd: inDir, onlyFiles: true })
   if (files.length < 1) {
-    throw new Error(`directory "${sourceDir}" is empty`)
+    throw new Error(`directory "${inDir}" is empty`)
   }
   await fs.remove(tarball)
   await fs.mkdir(outDir, { recursive: true })
@@ -25,7 +25,7 @@ async function main() {
       strict: true,
       portable: true,
       file: tarball,
-      cwd: sourceDir,
+      cwd: inDir,
       sync: true,
     },
     files
