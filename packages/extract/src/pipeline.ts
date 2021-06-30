@@ -48,7 +48,7 @@ async function main() {
   // The Git ref that we want to publish.
   const upstreamRef = `v${upstreamVersion}`
   const downstreamDir = '../joplin-plugin'
-  const downstreamVersion = `${upstreamVersion}-2`
+  const downstreamVersion = `${upstreamVersion}-4`
   await pipeline(
     upstreamDir,
     upstreamVersion,
